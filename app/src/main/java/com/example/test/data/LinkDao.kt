@@ -12,5 +12,5 @@ interface LinkDao {
     fun getLinks(offset : Int, limit : Int): Flow<List<LinkItem>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertLinks(links: List<LinkItem>)
+    suspend fun insertLink(link: LinkItem)
 }

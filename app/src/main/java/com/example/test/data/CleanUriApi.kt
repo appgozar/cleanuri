@@ -18,7 +18,7 @@ interface CleanUriApi {
 
     companion object{
         @JvmStatic
-        fun prepare() : CleanUriApi{
+        fun create() : CleanUriApi{
             val client = OkHttpClient.Builder().build()
             return Retrofit.Builder()
                 .baseUrl("https://cleanuri.com/")

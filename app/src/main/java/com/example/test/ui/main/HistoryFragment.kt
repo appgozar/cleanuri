@@ -9,18 +9,23 @@ import androidx.appcompat.widget.LinearLayoutCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.test.adapter.HistoryAdapter
 import com.example.test.databinding.HistoryFragmentBinding
 import com.example.test.model.HistoryViewModel
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class HistoryFragment : Fragment() {
 
-    private lateinit var binding : HistoryFragmentBinding
+    private var _binding : HistoryFragmentBinding ?= null
+    private val binding : HistoryFragmentBinding
+        get() = _binding!!
     private lateinit var viewModel : HistoryViewModel
     private val adapter = HistoryAdapter()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        binding = HistoryFragmentBinding.inflate(inflater, container, false)
+        _binding = HistoryFragmentBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -30,5 +35,20 @@ class HistoryFragment : Fragment() {
         viewModel.linkHistory.observe(viewLifecycleOwner){ adapter.submitList(it) }
         binding.recyclerView.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
         binding.recyclerView.adapter = adapter
+    }
+
+    override fun onDestroyView() {
+        binding.recyclerView.addOnAttachStateChangeListener(object : View.OnAttachStateChangeListener{
+            override fun onViewAttachedToWindow(v: View?) {
+
+            }
+
+            override fun onViewDetachedFromWindow(v: View?) {
+                (v as? RecyclerView)?.adapter = null
+            }
+
+        })
+        super.onDestroyView()
+        _binding = null
     }
 }

@@ -1,11 +1,11 @@
 package com.example.test.model
 
-import android.app.Application
-import androidx.lifecycle.AndroidViewModel
+import androidx.hilt.lifecycle.ViewModelInject
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
-import com.example.test.data.AppDb
+import androidx.lifecycle.viewModelScope
+import com.example.test.data.HistoryRepository
 
-class HistoryViewModel(application: Application) : AndroidViewModel(application) {
-
-    val linkHistory = AppDb.getInstance(application).linkDao().getLinks(0, 20).asLiveData()
+class HistoryViewModel @ViewModelInject constructor(linkRepository: HistoryRepository) : ViewModel() {
+    val linkHistory = linkRepository.getLinks().asLiveData(viewModelScope.coroutineContext)
 }
