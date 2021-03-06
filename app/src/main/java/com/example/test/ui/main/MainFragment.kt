@@ -66,13 +66,8 @@ class MainFragment : Fragment() {
     private fun shortUrl(){
         Util.hideKeyboard(requireContext(), binding.textInputEditText)
         val url = binding.textInputEditText.text?.toString() ?: ""
-        if(url.matches("^http(|s)://.+\\..+".toRegex())){
-            viewModel.responseLiveData.value = Resource.getLoading()
-            viewModel.shorten(url)
-        }else{
-            viewModel.responseLiveData.value = Resource.getIdle()
+        if(!viewModel.shorten(url))
             binding.textInputLayout.error = getString(R.string.error_invalid_url)
-        }
     }
 
     private fun copyToClipboard(){

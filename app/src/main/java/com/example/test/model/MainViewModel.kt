@@ -2,6 +2,7 @@ package com.example.test.model
 
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.*
+import com.example.test.R
 import com.example.test.data.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -12,9 +13,15 @@ class MainViewModel @ViewModelInject constructor(private val repository : LinkRe
 
     val responseLiveData = MutableLiveData<Resource<CleanUriResponse>>()
 
-    fun shorten(url : String){
+    fun shorten(url : String) : Boolean{
+        if(!url.matches("^http(|s)://.+\\..+".toRegex())){
+            responseLiveData.value = Resource.getIdle()
+            return false
+        }
+        responseLiveData.value = Resource.getLoading()
+
         if(work?.isActive == true)
-            return
+            return true
 
         work = viewModelScope.async(Dispatchers.IO) {
             val resultUrl = repository.shortenUrl(url)
@@ -22,5 +29,6 @@ class MainViewModel @ViewModelInject constructor(private val repository : LinkRe
             responseLiveData.postValue(resource)
             resultUrl?.also { repository.insertLink(it) }
         }
+        return true
     }
 }
