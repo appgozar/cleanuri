@@ -6,3 +6,4 @@ Libraries:
   - Retrofit
   - Navigation
   - Kotlin coroutines
+  - Dagger-Hilt
