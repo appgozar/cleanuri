@@ -10,7 +10,7 @@ import retrofit2.http.POST
 interface CleanUriApi {
 
     @FormUrlEncoded
-    @POST("api/v1/shorten")
+    @POST("shorten")
     suspend fun shortenUrl(
         @Field("url") url: String
     ): CleanUriResponse
@@ -21,7 +21,7 @@ interface CleanUriApi {
         fun create() : CleanUriApi{
             val client = OkHttpClient.Builder().build()
             return Retrofit.Builder()
-                .baseUrl("https://cleanuri.com/")
+                .baseUrl("https://cleanuri.com/api/v1/")
                 .client(client)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build()

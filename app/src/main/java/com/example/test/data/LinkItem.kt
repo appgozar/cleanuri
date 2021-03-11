@@ -6,4 +6,4 @@ import androidx.room.PrimaryKey
 import java.util.*
 
 @Entity(tableName = "links")
-data class LinkItem(@PrimaryKey(autoGenerate = true) val id : Int = 0, val url : String, val date : Long = Calendar.getInstance().timeInMillis)
+data class LinkItem(@PrimaryKey(autoGenerate = true) val id : Int = 0, val url : String, val originalUrl : String, val date : Long = Calendar.getInstance().timeInMillis)

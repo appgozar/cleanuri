@@ -1,11 +1,13 @@
 package com.example.test.ui.main
 
+import android.content.res.Configuration
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModel
@@ -13,11 +15,13 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.NavHostFragment
 import com.example.test.R
 import com.example.test.data.*
+import com.example.test.data.MainPreference.dataStore
 import com.example.test.databinding.MainFragmentBinding
 import com.example.test.model.MainViewModel
 import com.example.test.util.Util
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
@@ -50,7 +54,16 @@ class MainFragment : Fragment() {
         }
         binding.tvResult.setOnClickListener { copyToClipboard() }
         binding.submitButton.setOnClickListener { shortUrl() }
+        binding.scDayNight.isChecked = resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_YES != 0
+        binding.scDayNight.setOnCheckedChangeListener { _, isChecked ->
+            if(isChecked){
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+            }else{
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+            }
+        }
     }
+
     private fun setupObserver(){
         viewModel.responseLiveData.observe(viewLifecycleOwner){ resurce ->
             binding.progressbar.visibility = if(resurce.status == Resource.LOADING) View.VISIBLE else View.GONE

@@ -8,10 +8,9 @@ import javax.inject.Singleton
 class LinkRepository @Inject constructor(private val cleanUriApi : CleanUriApi, private val linkDao: LinkDao) {
 
     suspend fun shortenUrl(url : String) : String?{
-        return try { cleanUriApi.shortenUrl(url).shortenUrl }catch (e : Exception){ null }
-    }
-
-    suspend fun insertLink(url : String) {
-        linkDao.insertLink(LinkItem(url = url))
+        val resultUrl =  try { cleanUriApi.shortenUrl(url).shortenUrl }catch (e : Exception){ null }
+        if(resultUrl != null)
+            linkDao.insertLink(LinkItem(url = resultUrl, originalUrl = url))
+        return resultUrl
     }
 }
