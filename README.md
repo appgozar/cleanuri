@@ -1,4 +1,5 @@
-Simple link shortner using CleanUri.com api
+Simple link shortner using CleanUri.com api<br />
+
 ![Alt text](Screenshot_1.jpg?raw=true "screenshot")
 ![Alt text](Screenshot_2.jpg?raw=true "screenshot")
 
